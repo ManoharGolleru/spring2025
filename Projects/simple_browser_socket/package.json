@@ -1,0 +1,13 @@
+{
+  "name": "simple-browser-socket",
+  "version": "0.0.1",
+  "description": "Uses socket.io for messages between python and javascript",
+  "type": "module",
+  "dependencies": {
+    "compression": "^1.7.5",
+    "express": "^4.21.2",
+    "request": "^2.88.2",
+    "socket.io": "^4.8.1",
+    "yargs": "^17.7.2"
+  }
+}
