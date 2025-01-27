@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Admin - Real-time Transcription</title>
+<link rel="stylesheet" href="css/index.css">
+
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+</head>
+
+<body>
+<div id="divMain" style="margin:0;height:100%;clear:both;padding:20px;">
+	<div style="height:150px;width:100%;">
+		<div style="float:left;">
+			<!--
+			<img src="images/you-could-pick-a-logo.png" width=490px>
+			-->
+		</div>
+		<div style="float:left;">
+			<fieldset>
+				<legend>Config</legend>
+				<label for="deviceID">Device ID: </label><select id="deviceID"></select>
+				<br>
+				<label for="samplerate">Sample Rate [Hz]: </label><input type="number" id="samplerate" value="44100" disabled>
+				<br>
+				<label for="channels">Channels: </label><select id="channels" disabled><option value="1">1</option><option value="2" disabled>2</option></select>
+				<br>
+				<label for="frames_per_buffer">Frames per Buffer: </label><input type="number" id="frames_per_buffer" value="44100" disabled>
+				<!--
+				<button id="btn_mic_init"  onClick="pubUserFeedback('mic_init');"  disabled>Init Mic</button>
+				<button id="btn_mic_start" onClick="pubUserFeedback('mic_start');" disabled>Start Mic</button>
+				<button id="btn_mic_stop"  onClick="pubUserFeedback('mic_stop');"  disabled>Stop Mic</button>
+				-->
+				<br>
+				<label for="model">Model: </label><select id="model"><option value="tiny">tiny.en</option><option value="small">small.en</option></select>
+				<!--<label for="rateSec">Rate Seconds:</label><input type="number" id="rateSec" value="4">-->
+				<br>
+				<br>
+				<center>
+				<button id="btn_transcribe_start" onClick="pubUserFeedback('transcribe_start');">Start Transcription</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button id="btn_transcribe_stop"  onClick="pubUserFeedback('transcribe_stop');">Stop Transcription</button>
+				</center>
+			</fieldset>		
+		</div>
+	</div>
+	
+	<br>
+	
+	<div style="height:39%;width:100%;clear:both;">
+		<div style="float:left;width:50px;height:80%;padding:10px;text-align:center;">
+			<button style="border-radius:10px;width:30px;height:30px;font-weight:bolder;font-size:x-large" onClick="fontSize(-1);">-</button>	
+			<br><br>
+			<button style="border-radius:10px;width:30px;height:30px;font-weight:bolder;font-size:x-large" onClick="fontSize(+1);">+</button>
+		</div>
+		<div id="stuffdiv" style="float:left;padding:10px;width:75%;height:100%;overflow-y:auto;margin-bottom:5px;border-style:solid;border-width:1px;">
+			<span id="stuff" style="font-size:14pt;padding-bottom:30px;"></span>			
+		</div>	
+		<div style="float:left;width:50px;height:45px;padding:10px;text-align:center;clear:left;">
+			<button id="btnIncomp" style="border-radius:10px;width:75px;height:30px;font-weight:bolder;font-size:x-large;text-align:center;" onClick="toggleIncomplete();">hide</button>	
+		</div>		
+		<div id="incompDiv" style="float:left;padding:10px;margin-left:20px;width:73%;height:45px;overflow-y:auto;margin-bottom:5px;border-style:solid;border-width:1px;background-color:#e2e2e2;">
+			<span id="incomp" style="font-size:14pt;padding-bottom:30px;"></span>
+		</div>	
+	</div>
+</div>
+
+<script>
+	var fontPt = 14;
+	function fontSize(val)  {
+		fontPt += val;
+		stuff.style.fontSize = fontPt + 'pt';	
+		incomp.style.fontSize = fontPt + 'pt';	
+	}
+
+	function toggleIncomplete()  {
+		console.log(btnIncomp.innerHTML);
+		if (btnIncomp.innerHTML == 'hide')  {
+			incompDiv.style.display = 'none';
+			btnIncomp.innerHTML = 'show';
+		}  else  {
+			incompDiv.style.display = 'block';
+			btnIncomp.innerHTML = 'hide';
+		}
+	}
+
+	function addToSelectList(lst, itmVal, itmTxt=null)  {
+		/*
+		Add `itmVal` to a select list named `lst`.
+		The text in the list be be itmTxt
+		*/ 
+		var selList = document.getElementById(lst);
+
+		// is this item already an option?
+		if (!isValueInOptions(selList, itmVal))  {	
+			// If not, add it to our select lists:
+			var el = document.createElement("option");
+			if (itmTxt == null)  {itmTxt = itmVal;} 
+			el.textContent = itmTxt;
+			el.value = itmVal;
+
+			selList.appendChild(el);
+		}  else  {
+			return;
+		}	
+	}	
+
+	function isValueInOptions(sel, val)  {
+		/*
+		sel is of the form `document.getElemenById('someSelectElement')`
+		Check if `val` is a value in this select list.
+		*/
+
+		var found = false;
+		for (var i = 0; i < sel.options.length; i++)  {
+			if (sel.options[i].value == val)  {
+				found = true;
+				return true;
+			}
+		}	
+		return found;
+	}
+
+
+	const socket = io({
+		ackTimeout: 10000,
+		retries: 0,
+		auth: {
+		  serverOffset: 0
+		}
+	});
+	
+	socket.on('live_transcript', (msg, serverOffset) => {
+		console.log(msg[0].completed.length);
+		for (var i = 0; i < msg[0].completed.length; i++)  {
+			stuff.innerHTML += '<br>' + msg[0].completed[i].comp_text;
+			// scroll to bottom
+			document.getElementById('stuffdiv').scrollTop = stuffdiv.scrollHeight + 60;
+		}
+		incomp.innerHTML = msg[0].incomp_text;
+
+		socket.auth.serverOffset = serverOffset;		// FIXME -- Is this necessary?
+	});
+
+	socket.on('status', (msg, serverOffset) => {
+		// FIXME  
+		msg[0].devices.forEach(function (item, index) {
+			// console.log(item);
+			var junk = item.split("|")
+			addToSelectList('deviceID', junk[0], itmTxt=junk[0] + ' | ' + junk[1]);
+		});
+
+		socket.auth.serverOffset = serverOffset;		// FIXME -- Is this necessary?
+	});
+
+
+	function pubUserFeedback(field_name)  {
+		var cmd = {field_name: field_name, values: []};
+		
+		if (field_name == 'get_devices')  {
+			cmd.values = [];	
+		}  else if (field_name == 'mic_init')  {
+			cmd.values = [String(deviceID.value), 	         // deviceID (from select list)		
+						  String(samplerate.value),          // default 44100 [Hz]
+						  String(channels.value),            // from select list of (1 or 2 disabled)
+						  String(frames_per_buffer.value)];  // default 44100?
+		}  else if (field_name == 'mic_start')  {
+			cmd.values = [];			
+		}  else if (field_name == 'mic_stop')  {
+			cmd.values = [];			
+		}  else if (field_name == 'transcribe_start')  {
+			cmd.values = [String(deviceID.value), 	         // deviceID (from select list)		
+						  String(samplerate.value),          // default 44100 [Hz]
+						  String(channels.value),            // from select list of (1 or 2 disabled)
+						  String(frames_per_buffer.value),   // default 44100?
+						  String(model.value)];              // default tiny
+		}  else if (field_name == 'transcribe_stop')  {
+			cmd.values = [];
+		}  else  {
+			console.log('Unknown field name: ' + field_name);
+			return;
+		}
+		
+		
+		socket.emit('user_feedback', cmd);
+	}
+
+	pubUserFeedback('get_devices');
+
+</script>
+
+
+</body>
+</html>
+
