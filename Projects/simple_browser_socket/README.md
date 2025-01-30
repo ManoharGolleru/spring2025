@@ -23,18 +23,6 @@ git clone https://github.com/IE-482-582/spring2025.git
 ```
 - QUESTION:  What is the equivalent command for Windows users?
 
-### 3. In Case of Issues
-If you get errors when running the project (see steps below), you may need to explictly install these `Node.JS` dependencies.
-
-You will need to run these commands from the directory where the `server_secure.cjs` file is saved.
-```
-npm install express@4
-npm install socket.io
-npm install compression
-npm install request
-npm install yargs
-```
-
 ---
 
 ## Running the Project
@@ -50,6 +38,26 @@ You will need 2 terminal windows.  In both of them, change directories to the `s
     
 Now, open your browser to https://localhost:8080/index.html
 
+**Got errors?**  See the Troubleshooting notes below.
+
+---
+
+## Troubleshooting
+If you get errors when running the `node` command, you may need to explictly install these `Node.JS` dependencies.
+You will need to run these commands from the directory where the `server_secure.cjs` file is saved.
+```
+npm install express@4
+npm install socket.io
+npm install compression
+npm install request
+npm install yargs
+```
+
+If you get errors related to Python not being able to find a package, chances are you're missing these:
+```
+pip install python-socketio
+pip install websocket-client
+```
 
 ---
 
