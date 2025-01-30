@@ -1,8 +1,8 @@
 import numpy as np
-import cv2
+import cv2   # Try `pip install opencv-contrib-python`
 import datetime, time
 import threading
-import os
+import os, platform
 import math
 from collections import deque
 
@@ -26,14 +26,24 @@ try:
 	from cv_bridge import CvBridge  # NOTE:  Does not support CompressedImage in Python
 	from sensor_msgs.msg import Image, CompressedImage
 except Exception as e:
-	print(f'ROS Import Error: {e}')
+	print(f'NOTE: Could not import rospy:  {e}')
 
 ROSPUB_MAX_WAIT_TIME_SEC = 2  # max time (in seconds) we wait for condition
 # ------------------------------------------------
 
-
-HOME_DIRECTORY = os.environ['HOME']
-
+'''
+try:
+	system = platform.system()
+	if (system == 'Linux'):
+		# For Linux/Mac
+		HOME_DIRECTORY = os.environ['HOME']
+	else:
+		# For Windows
+		HOME_DIRECTORY = os.environ['USERPROFILE']
+except Exception as e:
+	print(f'Error - Could not set HOME_DIRECTORY: {e}')
+'''	
+		
 
 '''
 import ub_camera
@@ -1248,7 +1258,7 @@ class Camera():
 		if (sslPath):
 			self.sslPath = sslPath
 		else:
-			self.sslPath = f'{HOME_DIRECTORY}/Projects/ssl'  # Place where ca.key and ca.crt are saved
+			self.sslPath = f'{os.getcwd()}/ssl'  # Place where ca.key and ca.crt are saved
 			
 		# If provided, the pubCamStatus function would be in the "main" script.
 		# Otherwise, we'll just call `pass`
