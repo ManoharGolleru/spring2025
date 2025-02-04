@@ -162,6 +162,7 @@ You will need **two terminal windows**. In both, change directories to the `simp
   ```
 
 - **Terminal 2** (Runs the client):
+- Activate a virtual environment so all the project related packages can be available in the environment and not system wide since you might not need them.
   ```sh
   python3 client.py
   ```
