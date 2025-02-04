@@ -2337,10 +2337,10 @@ class CameraROS(Camera):
 			
 class CameraUSB(Camera):
 	''' 
-	Maybe rename this CamDev, 
+	Maybe rename this CameraDev, 
 	since it will also work for our RPi cameras on Ubuntu
-	(they connect to /dev/video0)?
-	
+		(they connect to /dev/video0)?
+	This can also connect to an input stream (set `device="https://localhost:8000/stream.mjpg"` and `apiPref=None`)
 	It's not limited to just USB cameras.
 	'''
 	
@@ -2410,7 +2410,7 @@ class CameraUSB(Camera):
 			# FIXME -- Need to verify that the updates actually went thru
 			self.updateResolution(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT), self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)) 
 			self.updateFramerate(self.cap.get(cv2.CAP_PROP_FPS))
-
+			
 			# self.logger.log(f'_thread_capture: {res_rows}, {res_cols}, {framerate}', severity=ub_utils.SEVERITY_DEBUG)
 
 		except Exception as e:
@@ -2419,6 +2419,7 @@ class CameraUSB(Camera):
 			
 		else:	
 			try:
+				print(self.cap.isOpened())
 				while(self.cap.isOpened()):
 					ret, frame = self.cap.read()
 					
