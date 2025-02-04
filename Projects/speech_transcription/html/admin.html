@@ -32,7 +32,21 @@
 				<button id="btn_mic_stop"  onClick="pubUserFeedback('mic_stop');"  disabled>Stop Mic</button>
 				-->
 				<br>
-				<label for="model">Model: </label><select id="model"><option value="tiny">tiny.en</option><option value="small">small.en</option></select>
+				<label for="model">Model: </label>
+					<select id="model">
+						<option value="tiny">tiny.en</option>
+						<option value="base">base.en (exp)</option>
+						<option value="small">small.en</option>
+						<option value="medium">medium.en (exp)</option>
+						<option value="large-v2" disabled>large-v2</option> 
+						<option value="large-v3" disabled>large-v3</option> 
+						<option value="distil-small">distil-small.en</option>
+						<option value="distil-medium">distil-medium.en (exp)</option>
+						<option value="distil-large-v2" disabled>distil-large-v2</option>
+						<option value="distil-large-v3" disabled>distil-large-v3</option>
+						<option value="large-v3-turbo" disabled>large-v3-turbo</option>
+						<option value="turbo" disabled>turbo</option>						
+					</select>
 				<!--<label for="rateSec">Rate Seconds:</label><input type="number" id="rateSec" value="4">-->
 				<br>
 				<br>
