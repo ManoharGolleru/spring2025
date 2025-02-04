@@ -4,7 +4,7 @@
 --- 
 
 - [Syllabus](IE_482-582_Syllabus_Spring_2025.pdf)
-- TA:  Angelo Soto Vergel (angeloso@buffalo.edu), Thursdays, 2:30-4:30pm, Bell 314/333
+- TA:  Angelo Soto Vergel (angeloso@buffalo.edu), Thursdays, 3:00-5:00pm, Bell 314/333
 - Instructor:  Chase Murray (cmurray3@buffalo.edu), (office hours TBD, and by appointment)
 
 ---
