@@ -39,6 +39,7 @@ To get started, you need to have a few things installed on your system.
 ---
 
 ## 2. Creating a Virtual Environment in Python or Conda
+**Note:** I did not do these as i had these setup before but if want you- you can follow these steps to set things for your computer
 
 ### **Using Python (`venv`)**
 
