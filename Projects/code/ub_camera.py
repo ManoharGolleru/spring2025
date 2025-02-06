@@ -2,7 +2,7 @@ import numpy as np
 import cv2   # Try `pip install opencv-contrib-python`
 import datetime, time
 import threading
-import os, platform
+import os, platform, sys
 import math
 from collections import deque
 
@@ -1834,12 +1834,23 @@ class Camera():
 				server = StreamingServer(address, handler)	
 				
 				# --- make this server secure (ssl/https) ---
-				server.socket = ssl.wrap_socket(
-					server.socket,
-					keyfile  = f'{self.sslPath}/ca.key',
-					certfile = f'{self.sslPath}/ca.crt',		
-					server_side=True)   
+				if ((sys.version_info.major == 3) and (sys.version_info.minor <= 7)):
+					# ssl.wrap_socket was deprecated in Python 3.7
+					# See https://github.com/eventlet/eventlet/issues/795
+					server.socket = ssl.wrap_socket(
+						server.socket,
+						keyfile  = f'{self.sslPath}/ca.key',
+						certfile = f'{self.sslPath}/ca.crt',		
+						server_side=True)   
+				else:
+					# This is the newer way:
+					ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+					ssl_context.load_cert_chain(
+						keyfile  = f'{self.sslPath}/ca.key',
+						certfile = f'{self.sslPath}/ca.crt')
+					server.socket = ssl_context.wrap_socket(server.socket, server_side = True)
 				# -------------------------------------------
+				
 				server.serve_forever()	
 					
 			finally:
