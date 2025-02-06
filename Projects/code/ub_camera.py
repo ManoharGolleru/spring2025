@@ -1196,6 +1196,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
 		super().__init__(*args, **kwargs)
 				 
 	def do_GET(self):
+		print(f'DEBUG: path? {self.path}')
 		if self.path == '/stream.mjpg':
 			self.send_response(200)
 			self.send_header('Age', 0)
@@ -1205,6 +1206,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
 			self.end_headers()
 			try:
 				self.camObject.streamIncr(+1)
+				print(f'DEBUG: keepStreaming? {self.camObject.keepStreaming}')
 				while self.camObject.keepStreaming:
 					with self.camObject.condition:
 						success = self.camObject.condition.wait(STREAM_MAX_WAIT_TIME_SEC)
@@ -2419,7 +2421,7 @@ class CameraUSB(Camera):
 			
 		else:	
 			try:
-				print(self.cap.isOpened())
+				print(f'Camera Opened? {self.cap.isOpened()}')
 				while(self.cap.isOpened()):
 					ret, frame = self.cap.read()
 					
