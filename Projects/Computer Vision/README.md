@@ -30,7 +30,7 @@ The app runs a Flask web server and streams the processed video feed to a browse
    ```
 
 3. **Install PyTorch (If Needed)**
-   - **For CPU**:
+   - **For CPU**: It should work without this but just in case you get an error
      ```bash
      pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
      ```
@@ -41,7 +41,7 @@ The app runs a Flask web server and streams the processed video feed to a browse
 ---
 
 ## 2. Running the Application
-Once the installation is complete, start the Flask app:
+Once the installation is complete, start the Flask app: Once the application starts it will download yolo11n.pt and yolo11n-seg.pt which are model weights needed for object detection and segmentation
 ```bash
 python app.py
 ```
@@ -88,17 +88,7 @@ The server will run on **http://localhost:5000**. Open this URL in your web brow
 
 ---
 
-## 5. Additional Notes
-- If using **Windows**, use:
-  ```bash
-  pip install torch -f https://download.pytorch.org/whl/torch_stable.html
-  ```
-  for compatibility.
-- If needed, manually install additional dependencies using `pip install <module_name>`.
-
----
-
-## 6. Closing the App
+## 5. Closing the App
 To properly shut down the application:
 1. Close the browser tab.
 2. Stop the Flask process in the terminal (`Ctrl + C`).
