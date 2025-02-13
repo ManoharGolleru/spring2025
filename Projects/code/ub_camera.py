@@ -2,7 +2,7 @@ import numpy as np
 import cv2   # Try `pip install opencv-contrib-python`
 import datetime, time
 import threading
-import os, platform
+import os, platform, sys
 import math
 from collections import deque
 
@@ -1196,6 +1196,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
 		super().__init__(*args, **kwargs)
 				 
 	def do_GET(self):
+		print(f'DEBUG: path? {self.path}')
 		if self.path == '/stream.mjpg':
 			self.send_response(200)
 			self.send_header('Age', 0)
@@ -1205,6 +1206,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
 			self.end_headers()
 			try:
 				self.camObject.streamIncr(+1)
+				print(f'DEBUG: keepStreaming? {self.camObject.keepStreaming}')
 				while self.camObject.keepStreaming:
 					with self.camObject.condition:
 						success = self.camObject.condition.wait(STREAM_MAX_WAIT_TIME_SEC)
@@ -1832,12 +1834,23 @@ class Camera():
 				server = StreamingServer(address, handler)	
 				
 				# --- make this server secure (ssl/https) ---
-				server.socket = ssl.wrap_socket(
-					server.socket,
-					keyfile  = f'{self.sslPath}/ca.key',
-					certfile = f'{self.sslPath}/ca.crt',		
-					server_side=True)   
+				if ((sys.version_info.major == 3) and (sys.version_info.minor <= 7)):
+					# ssl.wrap_socket was deprecated in Python 3.7
+					# See https://github.com/eventlet/eventlet/issues/795
+					server.socket = ssl.wrap_socket(
+						server.socket,
+						keyfile  = f'{self.sslPath}/ca.key',
+						certfile = f'{self.sslPath}/ca.crt',		
+						server_side=True)   
+				else:
+					# This is the newer way:
+					ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+					ssl_context.load_cert_chain(
+						keyfile  = f'{self.sslPath}/ca.key',
+						certfile = f'{self.sslPath}/ca.crt')
+					server.socket = ssl_context.wrap_socket(server.socket, server_side = True)
 				# -------------------------------------------
+				
 				server.serve_forever()	
 					
 			finally:
@@ -2419,7 +2432,7 @@ class CameraUSB(Camera):
 			
 		else:	
 			try:
-				print(self.cap.isOpened())
+				print(f'Camera Opened? {self.cap.isOpened()}')
 				while(self.cap.isOpened()):
 					ret, frame = self.cap.read()
 					
