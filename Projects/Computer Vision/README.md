@@ -4,12 +4,12 @@
 This application integrates multiple computer vision models to process real-time video from your webcam.  
 It supports various modes, including:
 - **Raw Video** (Unprocessed)
-- **Face Detection** (MediaPipe)
-- **Pose Estimation** (MediaPipe)
-- **Emotion Recognition** (DeepFace)
-- **Depth Estimation** (Depth Anything V2)
-- **Object Detection** (YOLO11n)
-- **Segmentation** (YOLO Segmentation: YOLO11n-seg)
+- **Face Detection** (MediaPipe) [https://ai.google.dev/edge/mediapipe/solutions/vision/face_detector/python]
+- **Pose Estimation** (MediaPipe) [https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker/python]
+- **Emotion Recognition** (DeepFace) [https://github.com/serengil/deepface]
+- **Depth Estimation** (Depth Anything V2) [https://github.com/DepthAnything/Depth-Anything-V2]
+- **Object Detection** (YOLO11n) [https://docs.ultralytics.com/]
+- **Segmentation** (YOLO Segmentation: YOLO11n-seg) [https://docs.ultralytics.com/]
 
 
 The app runs a Flask web server and streams the processed video feed to a browser interface.
