@@ -11,8 +11,6 @@ It supports various modes, including:
 - **Object Detection** (YOLO11n)
 - **Segmentation** (YOLO Segmentation: YOLO11n-seg)
 
-Mediapipe is better optimised for cpu's so we used that for Face and Pose, Yolo models perform far better than other's at object detection and segmentation but requires more resources. Depth Anything requires the most resources as the frame rate goes below 1 FPS - atleast on my Device (Intel i7, 16GB RAM)
-
 
 The app runs a Flask web server and streams the processed video feed to a browser interface.
 
@@ -99,4 +97,7 @@ To properly shut down the application:
    ```bash
    conda deactivate
    ```
+## 6. Conclusions
+
+Mediapipe is better optimised for cpu's so we used that for Face and Pose, Yolo models perform far better than other's at object detection and segmentation but requires more resources. Depth Anything requires the most resources as the frame rate goes below 1 FPS - atleast on my Device (Intel i7, 16GB RAM)
 
