@@ -1,0 +1,9 @@
+# Core dependencies
+ultralytics
+mediapipe
+flask
+opencv-contrib-python
+transformers
+pillow
+deepface
+tf-keras
