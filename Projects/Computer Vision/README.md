@@ -33,7 +33,7 @@ The app runs a Flask web server and streams the processed video feed to a browse
    ```
 
 3. **Install PyTorch (If Needed)**
-   - **For CPU**: It should work without this but just in case you get an error
+   - **For CPU**: It should already be installed with other packages but just in case you get an error
      ```bash
      pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
      ```
