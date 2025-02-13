@@ -11,7 +11,7 @@ It supports various modes, including:
 - **Object Detection** (YOLO)
 - **Segmentation** (YOLO Segmentation)
 
-  ![CV Flask App](CV_Flask_app.png)
+
 
 
 The app runs a Flask web server and streams the processed video feed to a browser interface.
