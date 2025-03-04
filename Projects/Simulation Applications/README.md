@@ -112,5 +112,7 @@ make px4_sitl gazebo_iris
 This command compiles the PX4 firmware and launches the SITL simulation with Gazebo using the Iris model.
 
 
-For a practical demonstration and more insights into using ArduPilot's SITL, you might find the following video helpful:[![PX4 SITL Demo](https://img.youtube.com/vi/Ewh0fKGEJL4/0.jpg)](https://www.youtube.com/watch?v=Ewh0fKGEJL4&ab_channel=ArduPilot)
+For a practical demonstration and more insights into using ArduPilot's SITL, you might find the following video helpful:
+
+[![PX4 SITL Demo](https://img.youtube.com/vi/Ewh0fKGEJL4/1.jpg)](https://www.youtube.com/watch?v=Ewh0fKGEJL4&ab_channel=ArduPilot)
 
