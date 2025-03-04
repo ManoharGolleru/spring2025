@@ -22,7 +22,7 @@ PX4 SITL supports multiple simulation environments and plugins, allowing you to 
 
 - **Gazebo:**  
   A high-fidelity 3D simulation environment that provides realistic physics and sensor modeling. Gazebo is well-suited for testing complex environments and can be integrated with ROS for enhanced robotics applications.  
-  More details: [PX4 Gazebo Simulation](https://docs.px4.io/main/en/simulation/gazebo.html)
+  More details: [PX4 Gazebo Simulation](https://docs.px4.io/main/en/sim_gazebo_gz/)
 
 - **jMAVSim:**  
   A lightweight and fast simulator primarily designed for multicopter simulations. It’s ideal for quick testing of flight dynamics and control loops without the overhead of a full 3D simulation.
