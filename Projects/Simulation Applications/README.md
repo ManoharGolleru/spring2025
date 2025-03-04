@@ -91,25 +91,15 @@ For macOS or Windows (using WSL), refer to the specific instructions in the PX4 
 
 ## Step 3: Build and Launch SITL
 
-### Option 1: Using jMAVSim (Lightweight Simulator)
+### Option 1: Using Gazebo (3D Simulation)
 
-From the PX4-Autopilot directory, run:
-
-```
-make px4_sitl jmavsim
-```
-
-This command compiles the PX4 firmware and launches the SITL simulation with jMAVSim as the simulator.
-
-### Option 2: Using Gazebo (3D Simulation)
-
-To run PX4 SITL with Gazebo (e.g., using the Iris quadcopter model), run:
+To run PX4 SITL with Gazebo, run:
 
 ```
-make px4_sitl gazebo_iris
+make px4_sitl gz_x500
 ```
 
-This command compiles the PX4 firmware and launches the SITL simulation with Gazebo using the Iris model.
+This command compiles the PX4 firmware and launches the SITL simulation with Gazebo using a quadcopter.
 
 
 For a practical demonstration and more insights into using ArduPilot's SITL, you might find the following video helpful:
