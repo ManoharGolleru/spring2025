@@ -110,7 +110,7 @@ For a practical demonstration and more insights into using ArduPilot's SITL, you
 
 # Controlling PX4 SITL with MAVSDK: Installation & Code
 
-Note: Everything is running on Ubuntu 24.04
+Note: Everything is running on Ubuntu 24.04, gazebo Harmonic v 8.9.0
 
 This guide explains how to install MAVSDK in a Python virtual environment and write a Python script to control (move and land) a quadcopter in PX4 SITL running in Gazebo.
 
