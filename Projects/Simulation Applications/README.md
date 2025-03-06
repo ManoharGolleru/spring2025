@@ -106,3 +106,133 @@ For a practical demonstration and more insights into using ArduPilot's SITL, you
 
 [![PX4 SITL Demo](https://img.youtube.com/vi/Ewh0fKGEJL4/0.jpg)](https://www.youtube.com/watch?v=Ewh0fKGEJL4&ab_channel=ArduPilot)
 
+
+
+# Controlling PX4 SITL with MAVSDK: Installation & Code
+
+Note: Everything is running on Ubuntu 24.04
+
+This guide explains how to install MAVSDK in a Python virtual environment and write a Python script to control (move and land) a quadcopter in PX4 SITL running in Gazebo.
+
+---
+
+## 1. Running PX4 SITL with Gazebo
+
+Make sure you have started PX4 SITL with Gazebo. For example, from the PX4-Autopilot directory:
+
+```
+make px4_sitl gz_x500
+```
+
+You should see a window pop up with the drone on the ground
+
+## 2. Installing MAVSDK in a Python Virtual Environment
+
+Since your system is externally managed, it’s best to install MAVSDK in a virtual environment.
+
+Create a Virtual Environment:
+
+```
+python3 -m venv mavsdk_env
+```
+
+Activate the Virtual Environment On Linux:
+
+```
+source mavsdk_env/bin/activate
+```
+
+Install MAVSDK
+
+```
+pip install mavsdk
+```
+
+Now code to move the drone, save it as a python file (eg. move_drone.py) in PX4-Autopilot directory
+
+```
+import asyncio
+from mavsdk import System
+from mavsdk.offboard import (OffboardError, VelocityNedYaw)
+
+async def run():
+    # Connect to PX4 SITL (ensure the simulation is running)
+    drone = System()
+    await drone.connect(system_address="udp://:14540")
+
+    print("Waiting for drone connection...")
+    async for state in drone.core.connection_state():
+        if state.is_connected:
+            print("Drone connected!")
+            break
+
+    print("Waiting for global position and home position to be set...")
+    async for health in drone.telemetry.health():
+        if health.is_global_position_ok and health.is_home_position_ok:
+            print("Global position and home position are set")
+            break
+
+    print("Arming drone...")
+    await drone.action.arm()
+
+    print("Taking off...")
+    await drone.action.takeoff()
+    await asyncio.sleep(10)  # Wait for the drone to reach takeoff altitude
+
+    # Set an initial setpoint (required by PX4 for offboard mode)
+    print("Setting initial offboard setpoint (zero velocity)...")
+    await drone.offboard.set_velocity_ned(VelocityNedYaw(0.0, 0.0, 0.0, 0.0))
+    
+    print("Starting offboard mode...")
+    try:
+        await drone.offboard.start()
+    except OffboardError as error:
+        print(f"Failed to start offboard mode: {error._result.result}")
+        print("Disarming drone...")
+        await drone.action.disarm()
+        return
+
+    # Command the drone to move forward (1 m/s) for 10 seconds
+    print("Sending velocity command: Move forward at 1 m/s")
+    await drone.offboard.set_velocity_ned(VelocityNedYaw(1.0, 0.0, 0.0, 0.0))
+    await asyncio.sleep(10)
+
+    # Stop movement by sending a zero velocity command
+    print("Stopping drone...")
+    await drone.offboard.set_velocity_ned(VelocityNedYaw(0.0, 0.0, 0.0, 0.0))
+    await asyncio.sleep(5)
+
+    # Land the drone
+    print("Landing...")
+    await drone.action.land()
+    await asyncio.sleep(10)
+
+    print("Disarming drone...")
+    await drone.action.disarm()
+    print("Operation complete.")
+
+if __name__ == "__main__":
+    asyncio.run(run())
+```
+
+This code will start the drone, take off, stop at 5m, move in x direction and land the drone
+
+You need to run to start Gazebo first in a window
+
+Terminal 1:
+```
+make px4_sitl gz_x500
+```
+
+Then in another window, start the python venv and run the python code to move the drone in simulation
+
+Terminal 2:
+```
+source mavsdk_env/bin/activate
+```
+Run the script move_drone.py
+
+```
+python move_drone.py
+```
+
