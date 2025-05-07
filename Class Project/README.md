@@ -26,6 +26,7 @@ Anyone building or teaching UAV formation control, HRI studies with drones, or i
 </table>
 
 Above is a demonstration of how we can make formations using our application by just inputting a image with the formation structure that you desire.
+**The image processing step in our application can identify the minimum number of points that are required to form that shape**
 
 More detailed demostration can be found here:
 
