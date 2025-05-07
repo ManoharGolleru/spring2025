@@ -27,12 +27,13 @@ Anyone building or teaching UAV formation control, HRI studies with drones, or i
 
 Above is a demonstration of how we can make formations using our application by just inputting a image with the formation structure that you desire.
 
+More detailed demostration can be found here:
 
-
+[![Youtube Demonstration](https://img.youtube.com/vi/djIwRS4VLt8/0.jpg)](https://www.youtube.com/watch?v=djIwRS4VLt8&ab_channel=ManoharGolleru)
 ---
 # Setup
 
---
+
 ## PX4 SITL and Drone Application Development
 
 PX4's Software-in-the-Loop [SITL](https://ardupilot.org/dev/docs/sitl-simulator-software-in-the-loop.html) simulation provides a powerful platform to develop, test, and validate drone software without the need for physical hardware. This environment is essential for rapid prototyping, algorithm development, and mission planning in a risk-free virtual setting.
@@ -138,6 +139,7 @@ This command compiles the PX4 firmware and launches the SITL simulation with Gaz
 
 
 For a practical demonstration and more insights into using ArduPilot's SITL, you might find the following video helpful:
+
 
 [![PX4 SITL Demo](https://img.youtube.com/vi/Ewh0fKGEJL4/0.jpg)](https://www.youtube.com/watch?v=Ewh0fKGEJL4&ab_channel=ArduPilot)
 
