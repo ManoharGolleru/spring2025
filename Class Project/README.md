@@ -482,3 +482,6 @@ Due to hardware limitations, I was not able to test more complex shapes but the 
 - Simulate a drone swarm forming the exported 2D/3D formations with collision avoidance.
 - In a later phases, develop sequences for dynamic transitioning once 3D formations are stable.
 
+## References
+
+[PX4 Simulation Docs](https://docs.px4.io/main/en/simulation/)
