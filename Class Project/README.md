@@ -484,4 +484,8 @@ Due to hardware limitations, I was not able to test more complex shapes but the 
 
 ## References
 
-[PX4 Simulation Docs](https://docs.px4.io/main/en/simulation/)
+- [PX4 Simulation Docs](https://docs.px4.io/main/en/simulation/)
+- [Gazebo Simulation Docs](https://gazebosim.org/docs/latest/getstarted/)
+- [OpenCV Docs](https://docs.opencv.org/4.x/)
+- [Python asyncio Docs](https://docs.python.org/3/library/asyncio.html)
+- [Edge detection](https://huggingface.co/spaces/ml-bench/edge-detection) was used as a reference for edge detection
